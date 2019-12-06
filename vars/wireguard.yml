@@ -1,0 +1,26 @@
+###
+#   To edit the goodies
+#   `EDITOR=vim ansible-vault edit vars/vault.yml`
+###
+wireguard:
+  network:
+    interface:
+      home: eth0
+      vps: eth0
+  port: 1976
+  endpoint:
+    address: <IP address of your VPS>
+  subnet:
+    wireguard: 10.0.1.0/24
+    home: 10.0.0.0/24
+  address:
+    home:
+      router: 10.0.0.1
+    servers:
+      vps: 10.0.1.1/24
+      home: 10.0.1.2/32
+    clients:
+      iphone: 10.0.1.10/32
+      ipad: 10.0.1.11/32
+      laptop: 10.0.1.12/32
+

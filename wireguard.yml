@@ -1,0 +1,6 @@
+- hosts: localhost
+  vars_files:
+    - vars/vault.yml
+    - vars/wireguard.yml
+  tasks:
+    - include_tasks: tasks/wireguard.yml

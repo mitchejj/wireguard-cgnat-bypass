@@ -1,0 +1,17 @@
+vault:
+  wireguard:
+    vps_server:
+      private:  
+      public: 
+    home_server:
+      private: 
+      public: 
+    iphone:
+      private: 
+      public: 
+    laptop:
+      private: 
+      public: 
+    ipad:
+      private: 
+      public: 

@@ -1,0 +1,14 @@
+# https://github.com/angristan/ansible-wireguard
+
+
+- include: wireguard/configs.yml
+
+# - name: Start & Enable WireGuard service
+#   become: true
+#   service:
+#     name: "wg-quick@wg-{{ wireguard.interface }}"
+#     state: started
+#     enabled: true
+#   tags:
+#     - wireguard
+

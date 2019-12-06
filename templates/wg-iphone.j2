@@ -1,0 +1,11 @@
+# qrencode -t ansiutf8 < wg-iphone.conf
+[Interface]
+PrivateKey = {{ vault.wireguard.iphone.private }}
+Address = {{ wireguard.address.clients.iphone }}
+DNS = {{ wireguard.address.home.router }}
+
+[Peer]
+PublicKey = {{ vault.wireguard.vps_server.public }}
+Endpoint = {{ wireguard.endpoint.address }}:{{ wireguard.port }}
+AllowedIPs = 0.0.0.0/0, {{ wireguard.subnet.wireguard }}
+PersistentKeepalive = 45

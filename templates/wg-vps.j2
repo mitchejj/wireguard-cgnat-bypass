@@ -1,0 +1,39 @@
+# qrencode -t ansiutf8 < wg-server-vps.conf
+[Interface]
+ListenPort = {{ wireguard.port }}
+PrivateKey = {{ vault.wireguard.vps_server.private }}
+Address = {{ wireguard.address.servers.vps }}
+
+PreUp = echo 1 > /proc/sys/net/ipv4/ip_forward
+PreUp = echo 1 > /proc/sys/net/ipv4/conf/all/proxy_arp
+PreDown = echo 0 > /proc/sys/net/ipv4/ip_forward
+PreDown = echo 0 > /proc/sys/net/ipv4/conf/all/proxy_arp
+
+PostUp = ip rule add not from {{ wireguard.subnet.wireguard }} table main # This is needed to allow SSH access after enabling connection
+PostUp = iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+PostUp = iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+PostUp = iptables -A FORWARD -i %i -o %i -m conntrack --ctstate NEW -j ACCEPT
+PostDown = ip rule del not from {{ wireguard.subnet.wireguard }} table main
+PostDown = iptables -D FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+PostDown = iptables -D INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+PostDown = iptables -D FORWARD -i %i -o %i -m conntrack --ctstate NEW -j ACCEPT
+
+# home-server
+[Peer]
+PublicKey = {{ vault.wireguard.home_server.public }}
+AllowedIPs = {{ wireguard.address.servers.home }}, {{ wireguard.subnet.home }}, 0.0.0.0/0
+
+#iphone
+[Peer]
+PublicKey = {{ vault.wireguard.iphone.public }}
+AllowedIPs = {{ wireguard.address.clients.iphone }}
+
+#ipad
+[Peer]
+PublicKey = {{ vault.wireguard.ipad.public }}
+AllowedIPs = {{ wireguard.address.clients.ipad }}
+
+#laptop
+[Peer]
+PublicKey = {{ vault.wireguard.laptop.public }}
+AllowedIPs = {{ wireguard.address.clients.laptop }}

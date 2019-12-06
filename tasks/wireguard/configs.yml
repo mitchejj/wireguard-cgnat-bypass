@@ -1,0 +1,61 @@
+- name: "Wireguard: conf: making server-vps"
+  become: true
+  template:
+    src: wg-vps.j2
+    dest: "/etc/wireguard/wg-server-vps.conf"
+    owner: root
+    group: root
+    mode: 0600
+  # notify: restart wireguard
+  tags:
+    - wireguard_config
+    - wireguard
+
+- name: "Wireguard: conf: making server-home"
+  become: true
+  template:
+    src: wg-home.j2
+    dest: "/etc/wireguard/wg-server-home.conf"
+    owner: root
+    group: root
+    mode: 0600
+  # notify: restart wireguard
+  tags:
+    - wireguard_config
+    - wireguard
+
+- name: "Wireguard: conf: making iPhone"
+  become: true
+  template:
+    src: wg-iphone.j2
+    dest: "/etc/wireguard/wg-iphone.conf"
+    owner: root
+    group: root
+    mode: 0600
+  tags:
+    - wireguard_config
+    - wireguard
+
+- name: "Wireguard: conf: making iPad"
+  become: true
+  template:
+    src: wg-ipad.j2
+    dest: "/etc/wireguard/wg-ipad.conf"
+    owner: root
+    group: root
+    mode: 0600
+  tags:
+    - wireguard_config
+    - wireguard
+
+- name: "Wireguard: conf: making laptop"
+  become: true
+  template:
+    src: wg-laptop.j2
+    dest: "/etc/wireguard/wg-laptop.conf"
+    owner: root
+    group: root
+    mode: 0600
+  tags:
+    - wireguard_config
+    - wireguard
