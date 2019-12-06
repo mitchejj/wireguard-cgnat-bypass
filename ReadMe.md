@@ -22,18 +22,18 @@ I'm choosing Ubuntu 19.10 here for the sake of simplicity. I had initial tried t
 * wireguard.yml -- the playbook
 * valut_pass
 * vars
-* vault.yml -- storage for the keys
-* example_vault.yml -- an example vault
-* wireguard.yml -- variables specific to the setup
+    * vault.yml -- storage for the keys
+    * example_vault.yml -- an example vault
+    * wireguard.yml -- variables specific to the setup
 * tasks
-* install.yml -- basic packages for this to work
-* configs.yml -- task which generates our files
+    * install.yml -- basic packages for this to work
+    * configs.yml -- task which generates our files
 * templates
-* wg-vps.j2
-* wg-home.j2
-* wg-iphone.j2
-* wg-ipad.j2
-* wg-laptop.j2
+    * wg-vps.j2
+    * wg-home.j2
+    * wg-iphone.j2
+    * wg-ipad.j2
+    * wg-laptop.j2
 ## Assumptions:
 
 `vars/wireguard.yml`
@@ -46,24 +46,24 @@ I wanted a system that would allow me to add clients as need be, I also waned a 
 
 I provided a sample vault in the project, to decrypt it:
 
-ansible-vault decrypt vars/example_vault.yml
+    ansible-vault decrypt vars/example_vault.yml
 
 I am storing the vault password in `vault_pass`, of course don't keep the actual password file under source control. Edit `ansible.cfg` and choose a more secure location for the file.
 
 To encrypt the vault:
 
-ansible-vault encrypt vars/example_vault.yml
+    ansible-vault encrypt vars/example_vault.yml
 
 ## Method:
 
 Generate private and public keys for the servers and copy the resulting keys `vars/vault.yml`. A quick and dirty method to complete this would be something like:
 
-# clear && wg genkey | tee privatekey | wg pubkey > publickey && cat *key
+    # clear && wg genkey | tee privatekey | wg pubkey > publickey && cat *key
 
-...
+    ...
 
-gImSti1vM4o6sf7quuP++s4GFcaR39wlKkCdjnhjHm0=
-4amEjJRdtlvfXiO+Srqz3v4YJxRQsjJ1Gh0/+3txqGs=
+    gImSti1vM4o6sf7quuP++s4GFcaR39wlKkCdjnhjHm0=
+    4amEjJRdtlvfXiO+Srqz3v4YJxRQsjJ1Gh0/+3txqGs=
 
 Where the first line of the output would give you the *privatekey* and second line would give you the *publickey*, each server and client will need a unique keypair. Once completed could encrypt the vault.
 
@@ -71,7 +71,7 @@ Next, edit `vars/wireguard.yml` to reflect your home network, desired Wireguard 
 
 Now that the templates are set up accordingly run
 
-ansiable-playbook --ask-become-pass wireguard.yml
+    ansiable-playbook --ask-become-pass wireguard.yml
 
 The generated files will be created in `/etc/wireguard` only the root user can view and edit them.
 
@@ -79,7 +79,7 @@ Now what? Copy `wg-server-vps.conf` to your VPS server, `wg-server-home.conf` to
 
 For iPhone & iPad, the best way to to get configuration to your device is via qr code:
 
-sudo qrencode -t ansiutf8 < /etc/wireguard/wg-iphone.conf
+    sudo qrencode -t ansiutf8 < /etc/wireguard/wg-iphone.conf
 
 ## Special Thanks:
 
@@ -90,10 +90,10 @@ sudo qrencode -t ansiutf8 < /etc/wireguard/wg-iphone.conf
 Just a small list of things I would to do at some point in time
 
 - [ ] actually use Ansiable as intended
-- [ ] deploy to home and VPS servers, start/enable/restart services
+    - [ ] deploy to home and VPS servers, start/enable/restart services
 - [ ] make the variable nesting in `vars/wireguard.yml` slightly more logical
-- [ ] also allowing to use just one template file to generate multiple clients
-- [ ] make naming more generic, iphone --> phone
+    - [ ] also allowing to use just one template file to generate multiple clients
+    - [ ] make naming more generic, iphone --> phone
 - [ ] automated key generation and insertion
 
 ## Questions:
